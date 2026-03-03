@@ -9,11 +9,32 @@
     content="iFieldSmart AI connects construction data across every phase and for every stakeholder — powered by AI constructability, coordination, and reality intelligence." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <!-- Google Fonts: non-render-blocking -->
+  <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+  </noscript>
+  <!-- Font Awesome: non-render-blocking -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  </noscript>
+  <!-- AOS CSS: non-render-blocking -->
+  <link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  </noscript>
+  <!-- Preload hero LCP image -->
+  <link rel="preload" as="image"
+    href="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=75" />
   <style>
     *,
     *::before,
@@ -163,7 +184,13 @@
     .hero-bg {
       position: absolute;
       inset: 0;
-      background: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      background: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=75') center/cover no-repeat;
+    }
+
+    @media (max-width: 768px) {
+      .hero-bg {
+        background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=70');
+      }
     }
 
     .hero-overlay {
@@ -1086,7 +1113,8 @@
   <!-- HERO -->
   <section class="hero" id="home">
     <div class="hero-bg" aria-hidden="true"></div>
-    <video class="hero-video" autoplay muted loop playsinline aria-hidden="true">
+    <!-- Video only on desktop to save mobile bandwidth -->
+    <video class="hero-video" id="hero-video" autoplay muted loop playsinline aria-hidden="true">
       <source src="https://videos.pexels.com/video-files/3195650/3195650-hd_1920_1080_25fps.mp4" type="video/mp4" />
     </video>
     <div class="hero-overlay" aria-hidden="true"></div>
@@ -1166,8 +1194,11 @@
       <div class="roles-grid">
         <div class="role-card" data-aos="fade-up" data-aos-delay="100">
           <img class="role-card-img"
-            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80"
-            alt="Owners and Developers" loading="lazy" />
+            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=75" srcset="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=70 400w,
+                    https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=75 600w,
+                    https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80 800w"
+            sizes="(max-width: 768px) 100vw, 50vw" alt="Owners and Developers" loading="lazy" width="600"
+            height="320" />
           <div class="role-card-overlay"></div>
           <div class="role-card-body">
             <h3>Owners &amp; Developers</h3>
@@ -1177,8 +1208,10 @@
         </div>
         <div class="role-card" data-aos="fade-up" data-aos-delay="150">
           <img class="role-card-img"
-            src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80"
-            alt="General Contractors" loading="lazy" />
+            src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=75" srcset="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=400&q=70 400w,
+                    https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=75 600w,
+                    https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80 800w"
+            sizes="(max-width: 768px) 100vw, 50vw" alt="General Contractors" loading="lazy" width="600" height="320" />
           <div class="role-card-overlay"></div>
           <div class="role-card-body">
             <h3>General Contractors</h3>
@@ -1188,8 +1221,10 @@
         </div>
         <div class="role-card" data-aos="fade-up" data-aos-delay="200">
           <img class="role-card-img"
-            src="https://images.unsplash.com/photo-1508450859948-4e04fabaa4ea?auto=format&fit=crop&w=800&q=80"
-            alt="Trade Contractors" loading="lazy" />
+            src="https://images.unsplash.com/photo-1508450859948-4e04fabaa4ea?auto=format&fit=crop&w=600&q=75" srcset="https://images.unsplash.com/photo-1508450859948-4e04fabaa4ea?auto=format&fit=crop&w=400&q=70 400w,
+                    https://images.unsplash.com/photo-1508450859948-4e04fabaa4ea?auto=format&fit=crop&w=600&q=75 600w,
+                    https://images.unsplash.com/photo-1508450859948-4e04fabaa4ea?auto=format&fit=crop&w=800&q=80 800w"
+            sizes="(max-width: 768px) 100vw, 50vw" alt="Trade Contractors" loading="lazy" width="600" height="320" />
           <div class="role-card-overlay"></div>
           <div class="role-card-body">
             <h3>Trade Contractors</h3>
@@ -1442,9 +1477,23 @@
     </div>
   </footer>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- AOS deferred -->
+  <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    AOS.init({ duration: 700, once: true, offset: 60 });
+    // Disable hero video on mobile to save bandwidth
+    (function () {
+      if (window.innerWidth < 768) {
+        var v = document.getElementById('hero-video');
+        if (v) { v.remove(); }
+      }
+    })();
+
+    // Init AOS after page load
+    window.addEventListener('load', function () {
+      if (typeof AOS !== 'undefined') {
+        AOS.init({ duration: 700, once: true, offset: 60 });
+      }
+    });
 
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
