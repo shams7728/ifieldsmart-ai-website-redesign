@@ -1,12 +1,12 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>iFieldSmart AI — Connected Construction Intelligence</title>
+  <title>iFieldSmart AI &mdash; Connected Construction Intelligence</title>
   <meta name="description"
-    content="iFieldSmart AI connects construction data across every phase and for every stakeholder — powered by AI constructability, coordination, and reality intelligence." />
+    content="iFieldSmart AI connects construction data across every phase and for every stakeholder &mdash; powered by AI constructability, coordination, and reality intelligence." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
@@ -62,6 +62,7 @@
 
     html {
       scroll-behavior: smooth;
+      overflow-x: hidden;
     }
 
     body {
@@ -72,7 +73,7 @@
       overflow-x: hidden;
     }
 
-    /* ── NAVBAR ── */
+    /* -- NAVBAR -- */
     .navbar {
       position: sticky;
       top: 0;
@@ -152,25 +153,226 @@
       flex-direction: column;
       gap: 5px;
       cursor: pointer;
-      padding: 4px;
+      padding: 12px;
+      /* Increased hit area */
+      z-index: 1100;
+      position: relative;
     }
 
     .hamburger span {
       display: block;
-      width: 22px;
+      width: 24px;
       height: 2px;
       background: var(--dark);
       border-radius: 2px;
-      transition: 0.3s;
+      transition: transform 0.35s cubic-bezier(.4, 0, .2, 1), opacity 0.25s;
+      transform-origin: center;
     }
 
-    /* ── HERO ── */
+    /* Hamburger †’ X animation */
+    .hamburger.is-open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.is-open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .hamburger.is-open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* -- MOBILE DRAWER -- */
+    .nav-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 1050;
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      /* Prevent interception when invisible */
+    }
+
+    .nav-backdrop.visible {
+      opacity: 1;
+      pointer-events: auto;
+      /* Enable interaction when visible */
+    }
+
+    .nav-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(340px, 88vw);
+      background: #fff;
+      z-index: 2000;
+      /* Increased z-index to ensure it is on top */
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.38s cubic-bezier(.4, 0, .2, 1);
+      box-shadow: -8px 0 40px rgba(0, 0, 0, 0.15);
+      visibility: hidden;
+      /* Hide by default to prevent layout shifts */
+    }
+
+    .nav-drawer.is-open {
+      transform: translateX(0);
+      visibility: visible;
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid #f0f4f8;
+    }
+
+    .drawer-header-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: 0.5px;
+    }
+
+    .drawer-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--dark);
+      transition: background 0.2s;
+    }
+
+    .drawer-close:hover {
+      background: #e2e8f0;
+    }
+
+    .drawer-panes-wrapper {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .drawer-pane {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      background: #fff;
+      transition: transform 0.35s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    /* Main pane sits at 0 by default when active */
+    .drawer-pane-main {
+      transform: translateX(0);
+    }
+
+    /* When main pane is pushed left by a sub-pane */
+    .drawer-pane-main.pane-hidden {
+      transform: translateX(-100%);
+    }
+
+    /* Sub panes sit off-screen right by default */
+    .drawer-pane-sub {
+      transform: translateX(100%);
+    }
+
+    /* When a sub-pane becomes active, it slides to 0 */
+    .drawer-pane-sub.active {
+      transform: translateX(0);
+    }
+
+    .drawer-nav-item,
+    .drawer-back-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 16px 20px;
+      text-decoration: none;
+      color: #334155;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-bottom: 1px solid #f1f5f9;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.18s;
+    }
+
+    .drawer-nav-item:hover,
+    .drawer-back-btn:hover {
+      background: #f8fafc;
+    }
+
+    .drawer-nav-item .chevron {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .drawer-back-btn {
+      color: #64748b;
+      font-weight: 500;
+      justify-content: flex-start;
+      gap: 12px;
+      background: #f8fafc;
+      padding: 16px 20px;
+    }
+
+    .drawer-footer {
+      padding: 24px 20px;
+      background: #fff;
+      z-index: 2;
+    }
+
+    .drawer-cta {
+      display: block;
+      width: 100%;
+      background: #eda92e;
+      /* yellow matched to screenshot */
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 16px;
+      border-radius: 4px;
+      text-align: center;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+
+    .drawer-cta:hover {
+      opacity: 0.9;
+    }
+
+    /* — HERO — */
     .hero {
       position: relative;
-      min-height: 90vh;
+      min-height: 80vh;
       display: flex;
       align-items: center;
       overflow: hidden;
+      padding-top: 80px;
+      /* Offset for navbar */
     }
 
     .hero-video {
@@ -201,6 +403,7 @@
 
     .hero-content {
       position: relative;
+      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
       padding: 80px 24px;
@@ -224,11 +427,11 @@
 
     .hero h1 {
       font-family: 'Oswald', sans-serif;
-      font-size: clamp(32px, 4vw, 48px);
+      font-size: clamp(26px, 6vw, 42px);
       font-weight: 700;
-      line-height: 1.1;
-      max-width: 780px;
-      margin-bottom: 24px;
+      line-height: 1.15;
+      max-width: 740px;
+      margin-bottom: 20px;
       letter-spacing: -0.5px;
     }
 
@@ -241,17 +444,17 @@
     }
 
     .hero p {
-      font-size: clamp(16px, 2.2vw, 19px);
-      max-width: 640px;
-      color: rgba(255, 255, 255, 0.88);
-      margin-bottom: 36px;
-      line-height: 1.7;
+      font-size: clamp(14px, 4vw, 17px);
+      max-width: 580px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 32px;
+      line-height: 1.6;
     }
 
     .hero-btns {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
     }
 
     .btn-primary {
@@ -293,10 +496,10 @@
     }
 
     .hero-stats {
-      margin-top: 56px;
+      margin-top: 48px;
       display: flex;
       flex-wrap: wrap;
-      gap: 32px;
+      gap: 28px;
     }
 
     .hero-stat strong {
@@ -312,7 +515,7 @@
       color: rgba(255, 255, 255, 0.7);
     }
 
-    /* ── SECTION COMMON ── */
+    /* -- SECTION COMMON -- */
     section {
       padding: var(--section-pad);
     }
@@ -349,7 +552,7 @@
       margin-bottom: 48px;
     }
 
-    /* ── SUB-HERO ── */
+    /* -- SUB-HERO -- */
     .sub-hero {
       background: linear-gradient(135deg, #f8faff 0%, #fff8f0 100%);
     }
@@ -435,7 +638,7 @@
       color: var(--muted);
     }
 
-    /* ── ROLES ── */
+    /* -- ROLES -- */
     .roles {
       background: var(--bg);
     }
@@ -521,7 +724,7 @@
       opacity: 0.88;
     }
 
-    /* ── PHASES ── */
+    /* -- PHASES -- */
     .phases {
       background: linear-gradient(180deg, #f0f5ff 0%, #fafcff 100%);
     }
@@ -589,7 +792,7 @@
       text-align: right;
     }
 
-    /* ── DATA CORE ── */
+    /* -- DATA CORE -- */
     .data-core {
       background: var(--bg);
     }
@@ -659,7 +862,7 @@
       margin-bottom: 10px;
     }
 
-    /* ── CAPABILITIES ── */
+    /* -- CAPABILITIES -- */
     .capabilities {
       background: linear-gradient(135deg, #fff8f0 0%, #f8faff 100%);
     }
@@ -720,7 +923,7 @@
       line-height: 1.6;
     }
 
-    /* ── WHY SECTION ── */
+    /* -- WHY SECTION -- */
     .why-section {
       background: linear-gradient(135deg, var(--dark) 0%, var(--dark2) 100%);
       color: #fff;
@@ -799,7 +1002,7 @@
       line-height: 1.7;
     }
 
-    /* ── CTA ── */
+    /* -- CTA -- */
     .cta-section {
       background: var(--cta-grad);
       text-align: center;
@@ -864,54 +1067,111 @@
       background: rgba(255, 255, 255, 0.12);
     }
 
-    /* ── FOOTER ── */
+    /* -- FOOTER -- */
     .footer {
-      background: var(--dark);
-      color: rgba(255, 255, 255, 0.75);
-      padding: 64px 24px 32px;
+      background: #0a1628;
+      color: rgba(255, 255, 255, 0.72);
+      padding: 72px 24px 0;
     }
 
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 2fr;
-      gap: 40px;
+    .footer-inner {
       max-width: 1200px;
-      margin: 0 auto 40px;
+      margin: 0 auto;
     }
 
-    .footer-brand .nav-logo {
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 56px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Brand column */
+    .footer-brand-logo {
+      font-family: inherit;
+      font-size: 22px;
+      font-weight: 700;
       color: #fff;
-      font-size: 20px;
-      display: block;
-      margin-bottom: 12px;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 14px;
+    }
+
+    .footer-brand-logo span {
+      background: var(--cta-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .footer-brand p {
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.58);
+      margin-bottom: 24px;
+      max-width: 270px;
     }
 
-    .footer h5 {
-      font-family: 'Oswald', sans-serif;
+    .footer-socials {
+      display: flex;
+      gap: 10px;
+    }
+
+    .footer-socials a {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
       font-size: 14px;
-      font-weight: 600;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .footer-socials a:hover {
+      background: var(--accent2);
+      border-color: var(--accent2);
       color: #fff;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
+    }
+
+
+    /* Footer columns */
+    .footer-col-title {
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .footer-col-title .col-toggle {
+      display: none;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      transition: transform 0.3s ease;
     }
 
     .footer-links {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .footer-links a {
-      color: rgba(255, 255, 255, 0.65);
+      color: rgba(255, 255, 255, 0.58);
       text-decoration: none;
       font-size: 14px;
+      line-height: 1.4;
       transition: color 0.2s;
     }
 
@@ -919,80 +1179,116 @@
       color: var(--accent);
     }
 
-    .footer-newsletter input {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.07);
-      color: #fff;
-      font-size: 14px;
-      margin-bottom: 10px;
-      outline: none;
+    /* Nested Link Levels */
+    .footer-nested {
+      margin-top: 8px;
+      padding-left: 12px;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      display: none;
+      /* hidden by default, toggled via JS */
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .footer-newsletter input::placeholder {
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    .footer-newsletter input:focus {
-      border-color: var(--accent);
-    }
-
-    .footer-newsletter button {
-      width: 100%;
-      background: var(--cta-grad);
-      color: #fff;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
-    .footer-newsletter button:hover {
-      opacity: 0.88;
-    }
-
-    .footer-socials {
+    .footer-nested.open {
       display: flex;
-      gap: 12px;
-      margin-top: 16px;
     }
 
-    .footer-socials a {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.08);
+    .footer-nested a {
+      font-size: 13px;
+      padding: 4px 0;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .footer-nested a:hover {
+      color: var(--accent);
+    }
+
+    .footer-sub-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: rgba(255, 255, 255, 0.65);
-      text-decoration: none;
-      font-size: 14px;
-      transition: background 0.2s, color 0.2s;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 6px 0;
+      transition: color 0.2s;
     }
 
-    .footer-socials a:hover {
-      background: var(--accent2);
-      color: #fff;
+    .footer-sub-title:hover {
+      color: var(--accent);
     }
 
+    .footer-sub-title i {
+      font-size: 10px;
+      margin-left: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .footer-sub-title.expanded i {
+      transform: rotate(180deg);
+    }
+
+    /* Footer bottom bar */
     .footer-bottom {
-      max-width: 1200px;
-      margin: 0 auto;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 24px;
+      padding: 22px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
     }
 
-    /* ── RESPONSIVE ── */
+    .footer-bottom a {
+      color: rgba(255, 255, 255, 0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-bottom a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    /* -- HERO CANVAS -- */
+    .hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      /* sits ABOVE the dark overlay, BELOW the text content */
+      pointer-events: none;
+    }
+
+    /* Re-layer hero elements: bg/video †’ overlay †’ canvas animation †’ text */
+    .hero-bg,
+    .hero-video {
+      z-index: 1;
+    }
+
+    .hero-overlay {
+      z-index: 2;
+    }
+
+    /* canvas is z-index 3 (above) */
+
+    .hero-content {
+      z-index: 4;
+    }
+
+    /* -- ROLES SCROLL SNAP -- */
+    .roles-scroll-track {
+      display: contents;
+      /* transparent on desktop €” grid still applies */
+    }
+
+    /* -- RESPONSIVE -- */
     @media (max-width: 1024px) {
       .data-core-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -1008,8 +1304,9 @@
         max-width: none;
       }
 
-      .footer-grid {
+      .footer-top {
         grid-template-columns: 1fr 1fr;
+        gap: 40px;
       }
     }
 
@@ -1018,26 +1315,18 @@
         --section-pad: 56px 20px;
       }
 
+      /* Show hamburger, hide desktop nav */
       .hamburger {
         display: flex;
       }
 
       .nav-links {
-        display: none;
-        position: absolute;
-        top: 68px;
-        left: 0;
-        right: 0;
-        background: rgba(254, 254, 254, 0.98);
-        flex-direction: column;
-        padding: 16px 24px 24px;
-        border-bottom: 1px solid #e8ecf4;
-        gap: 4px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        display: none !important;
       }
 
-      .nav-links.open {
-        display: flex;
+      /* Show drawer backdrop */
+      .nav-backdrop {
+        display: block;
       }
 
       .sub-hero-grid,
@@ -1046,8 +1335,55 @@
         gap: 32px;
       }
 
+      /* -- Roles horizontal snap scroll -- */
       .roles-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 16px;
+        padding-bottom: 16px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        /* pull out of container padding so cards go edge-to-edge */
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .roles-grid::-webkit-scrollbar {
+        display: none;
+      }
+
+      .roles-grid .role-card {
+        flex: 0 0 82vw;
+        max-width: 320px;
+        scroll-snap-align: start;
+        min-height: 260px;
+      }
+
+      /* Scroll dots indicator */
+      .roles-scroll-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .roles-scroll-dots span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #d1d9e6;
+        transition: background 0.3s, transform 0.3s;
+        display: inline-block;
+      }
+
+      .roles-scroll-dots span.active {
+        background: var(--accent2);
+        transform: scale(1.3);
       }
 
       .data-core-grid {
@@ -1058,19 +1394,129 @@
         grid-template-columns: 1fr;
       }
 
-      .footer-grid {
+      /* -- Footer accordion -- */
+      .footer-top {
         grid-template-columns: 1fr;
-        gap: 28px;
+        gap: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .footer-brand {
+        display: block;
+        padding-bottom: 40px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 24px;
+        text-align: center;
+      }
+
+      .footer-brand p {
+        margin: 0 auto 24px;
+      }
+
+      .footer-socials {
+        justify-content: center;
+      }
+
+      .footer-col {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .footer-col-title {
+        padding: 16px 0;
+        margin-bottom: 0;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .footer-col-title .col-toggle {
+        display: block;
+      }
+
+      .footer-col-title.expanded .col-toggle {
+        transform: rotate(180deg);
+      }
+
+      .footer-links-wrap {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.32s ease;
+      }
+
+      .footer-links-wrap.open {
+        max-height: 300px;
+        padding-bottom: 16px;
       }
 
       .footer-bottom {
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
         text-align: center;
+        padding: 20px 0;
       }
 
       .hero-stats {
         gap: 20px;
+      }
+    }
+
+    /* End max-width: 1024px */
+
+    @media (max-width: 768px) {
+      .hero {
+        min-height: auto;
+        padding-top: 120px;
+        padding-bottom: 60px;
+        align-items: flex-start;
+        /* Fixes text clipping at the top on small screens */
+      }
+
+      .hero-content {
+        padding: 20px;
+        text-align: center;
+      }
+
+      .hero-badge {
+        margin: 0 auto 20px auto;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-btns {
+        justify-content: center;
+      }
+
+      .hero-stats {
+        margin-top: 36px;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 12px;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .hero-stat {
+        text-align: center;
+        flex: 1;
+      }
+
+      .hero-stat strong {
+        font-size: 26px;
+        /* slightly smaller to fit 3 in a row on mobile */
+      }
+
+      .hero-stat span {
+        font-size: 11px;
+        display: block;
+        line-height: 1.3;
+      }
+
+      /* Hide canvas on mobile — performance */
+      .hero-canvas {
+        display: none;
       }
     }
 
@@ -1081,11 +1527,17 @@
 
       .hero-btns {
         flex-direction: column;
+        width: 100%;
+      }
+
+      .hero-btns a {
+        width: 100%;
+        text-align: center;
       }
 
       .cta-btns {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
       }
     }
   </style>
@@ -1097,6 +1549,7 @@
   <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="navbar-inner">
       <a href="#" class="nav-logo">iField<span>Smart AI</span></a>
+      <!-- Desktop links -->
       <ul class="nav-links" id="nav-links">
         <li><a href="#roles">Explore by Role</a></li>
         <li><a href="#phases">Project Phases</a></li>
@@ -1104,18 +1557,71 @@
         <li><a href="#why">Why Us</a></li>
         <li><a href="#cta" class="btn-cta">Get Started</a></li>
       </ul>
-      <div class="hamburger" id="hamburger" aria-label="Toggle navigation" tabindex="0">
+      <!-- Hamburger (mobile) -->
+      <div class="hamburger" id="hamburger" aria-label="Open navigation" aria-expanded="false" tabindex="0"
+        role="button">
         <span></span><span></span><span></span>
       </div>
     </div>
   </nav>
 
+  <!-- Mobile Drawer Backdrop -->
+  <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
+
+  <!-- Mobile Nav Drawer -->
+  <div class="nav-drawer" id="nav-drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div class="drawer-header" style="z-index: 10; background: #fff;">
+      <span class="drawer-header-title">Menu</span>
+      <button class="drawer-close" id="drawer-close" aria-label="Close navigation">&times;</button>
+    </div>
+    <div class="drawer-panes-wrapper">
+      <!-- Main Pane -->
+      <nav class="drawer-pane drawer-pane-main active" id="pane-main">
+        <button class="drawer-nav-item drawer-has-sub" data-target="pane-products">Products <i
+            class="fa-solid fa-chevron-right chevron"></i></button>
+        <button class="drawer-nav-item drawer-has-sub" data-target="pane-solutions">Solutions <i
+            class="fa-solid fa-chevron-right chevron"></i></button>
+        <button class="drawer-nav-item">Use Cases <i class="fa-solid fa-chevron-right chevron"></i></button>
+        <button class="drawer-nav-item">Events <i class="fa-solid fa-chevron-right chevron"></i></button>
+        <button class="drawer-nav-item">Resources <i class="fa-solid fa-chevron-right chevron"></i></button>
+        <button class="drawer-nav-item">Partners <i class="fa-solid fa-chevron-right chevron"></i></button>
+        <a href="#pricing" class="drawer-nav-item">Pricing</a>
+        <a href="#contact" class="drawer-nav-item">Contact Us</a>
+      </nav>
+
+      <!-- Sub Pane: Products -->
+      <nav class="drawer-pane drawer-pane-sub" id="pane-products">
+        <button class="drawer-back-btn" data-target="pane-main"><i class="fa-solid fa-arrow-left"></i> Back</button>
+        <a href="#" class="drawer-nav-item">Lens360 <i class="fa-solid fa-chevron-right chevron"></i></a>
+        <a href="#" class="drawer-nav-item">Scope Gap Analysis</a>
+        <a href="#capabilities" class="drawer-nav-item">AI Constructability Review</a>
+        <a href="#capabilities" class="drawer-nav-item">AI BIM Constructability</a>
+        <a href="#capabilities" class="drawer-nav-item">Submittal AI</a>
+        <a href="#" class="drawer-nav-item">VDC</a>
+      </nav>
+
+      <!-- Sub Pane: Solutions -->
+      <nav class="drawer-pane drawer-pane-sub" id="pane-solutions">
+        <button class="drawer-back-btn" data-target="pane-main"><i class="fa-solid fa-arrow-left"></i> Back</button>
+        <a href="#roles" class="drawer-nav-item">For Owners &amp; Developers</a>
+        <a href="#roles" class="drawer-nav-item">For General Contractors</a>
+        <a href="#roles" class="drawer-nav-item">For Trade Contractors</a>
+        <a href="#roles" class="drawer-nav-item">For Architects &amp; Designers</a>
+      </nav>
+    </div>
+    <div class="drawer-footer">
+      <a href="#cta" class="drawer-cta">BOOK A DEMO</a>
+    </div>
+  </div>
+
   <!-- HERO -->
   <section class="hero" id="home">
+    <!-- AI/Construction canvas animation (desktop only) -->
+    <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
     <div class="hero-bg" aria-hidden="true"></div>
     <!-- Video only on desktop to save mobile bandwidth -->
     <video class="hero-video" id="hero-video" autoplay muted loop playsinline aria-hidden="true">
-      <source src="https://videos.pexels.com/video-files/3195650/3195650-hd_1920_1080_25fps.mp4" type="video/mp4" />
+      <source src="https://videos.pexels.com/video-files/3163534/3163534-uhd_3840_2160_30fps.mp4" type="video/mp4" />
     </video>
     <div class="hero-overlay" aria-hidden="true"></div>
     <div class="hero-content" data-aos="fade-up">
@@ -1157,7 +1663,7 @@
             <p style="font-size:14px;color:var(--muted);margin-top:4px;">Working together — not in silos.</p>
           </div>
         </div>
-        <div class="sub-hero-right" data-aos="fade-left">
+        <div class="sub-hero-right" data-aos="fade-up">
           <div class="tag-chip">
             <div class="tag-chip-icon"><i class="fa-solid fa-brain"></i></div>
             <div class="tag-chip-text"><strong>AI Constructability Intelligence</strong><span>Catch issues before
@@ -1244,6 +1750,13 @@
           </div>
         </div>
       </div>
+      <!-- Scroll indicator dots (mobile only) -->
+      <div class="roles-scroll-dots" id="roles-dots" aria-hidden="true">
+        <span class="active"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </section>
 
@@ -1324,7 +1837,7 @@
         </div>
         <div class="data-node" data-aos="zoom-in" data-aos-delay="200">
           <div class="data-node-icon"><i class="fa-solid fa-camera-retro"></i></div>
-          <h4>360° Reality Capture &amp; Progress</h4>
+          <h4>360&deg; Reality Capture &amp; Progress</h4>
         </div>
         <div class="data-node" data-aos="zoom-in" data-aos-delay="250">
           <div class="data-node-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
@@ -1333,7 +1846,8 @@
       </div>
       <div class="data-core-center" data-aos="fade-up" data-aos-delay="100">
         <h3>Connected Data Core — Powered by AI</h3>
-        <p>So every decision is based on complete, contextual data — not fragments. All from one connected platform.</p>
+        <p>So every decision is based on complete, contextual data — not fragments. All from one connected platform.
+        </p>
       </div>
     </div>
   </section>
@@ -1431,85 +1945,406 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="#" class="nav-logo" style="font-family:'Oswald',sans-serif;">iFieldSmart AI</a>
-        <p>Connected intelligence for every stakeholder in construction. Powered by AI across every project phase.</p>
-        <div class="footer-socials" style="margin-top:20px">
-          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-          <a href="#" aria-label="Website"><i class="fa-solid fa-globe"></i></a>
+    <div class="footer-inner">
+      <div class="footer-top">
+
+
+        <!-- Brand -->
+        <div class="footer-brand">
+          <a href="#" class="footer-brand-logo">iField<span>Smart AI</span></a>
+          <p>Connected intelligence for every stakeholder in construction. Powered by AI across every project phase.</p>
+          <div class="footer-socials">
+            <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" aria-label="Website"><i class="fa-solid fa-globe"></i></a>
+          </div>
+        </div>
+
+        <!-- Product -->
+        <div class="footer-col">
+          <div class="footer-col-title" data-col="col-product">
+            Product <span class="col-toggle"><i class="fa-solid fa-chevron-down"></i></span>
+          </div>
+          <div class="footer-links-wrap" id="col-product">
+            <ul class="footer-links">
+              <li>
+                <div class="footer-sub-title" data-nested="nested-lead">
+                  Lead generation <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="footer-nested" id="nested-lead">
+                  <a href="#">Lead capture</a>
+                  <a href="#">Data enrichment</a>
+                </div>
+              </li>
+              <li>
+                <div class="footer-sub-title" data-nested="nested-sales">
+                  Sales management <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="footer-nested" id="nested-sales">
+                  <a href="#">Pipeline analysis</a>
+                  <a href="#">Revenue forecasting</a>
+                </div>
+              </li>
+              <li><a href="#">Sales automation</a></li>
+              <li><a href="#">Integrations</a></li>
+              <li><a href="#">Email marketing</a></li>
+              <li><a href="#">Projects & Tasks</a></li>
+              <li><a href="#">See all features</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Why iFieldSmart -->
+        <div class="footer-col">
+          <div class="footer-col-title" data-col="col-why">
+            Why iFieldSmart <span class="col-toggle"><i class="fa-solid fa-chevron-down"></i></span>
+          </div>
+          <div class="footer-links-wrap" id="col-why">
+            <ul class="footer-links">
+              <li><a href="#">Solutions</a></li>
+              <li><a href="#">Competitor Comparison</a></li>
+              <li><a href="#">Customer stories</a></li>
+              <li><a href="#">By industry</a></li>
+              <li><a href="#">About us</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="footer-col">
+          <div class="footer-col-title" data-col="col-resources">
+            Resources <span class="col-toggle"><i class="fa-solid fa-chevron-down"></i></span>
+          </div>
+          <div class="footer-links-wrap" id="col-resources">
+            <ul class="footer-links">
+              <li><a href="#">Product help</a></li>
+              <li><a href="#">Content hub</a></li>
+              <li><a href="#">API Docs</a></li>
+              <li><a href="#">Product roadmap</a></li>
+              <li><a href="#">Product changelog</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </div><!-- /footer-top -->
+
+      <div class="footer-bottom">
+        <span>&copy; 2025 iFieldSmart Technologies. All rights reserved.</span>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Sitemap</a>
         </div>
       </div>
-      <div>
-        <h5>Sitemap</h5>
-        <ul class="footer-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#roles">Explore by Role</a></li>
-          <li><a href="#phases">Explore by Phase</a></li>
-          <li><a href="#capabilities">Products</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5>Platform</h5>
-        <ul class="footer-links">
-          <li><a href="#">Constructability AI</a></li>
-          <li><a href="#">Submittal AI</a></li>
-          <li><a href="#">Reality Intelligence</a></li>
-          <li><a href="#">Closeout AI</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-newsletter">
-        <h5>Stay Connected</h5>
-        <p style="font-size:13px;margin-bottom:14px;color:rgba(255,255,255,0.55)">Get the latest construction AI
-          insights and product updates.</p>
-        <input type="email" placeholder="Your email address" />
-        <button type="button">Subscribe <i class="fa-solid fa-paper-plane"></i></button>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2025 iFieldSmart Technologies. All rights reserved.</span>
-      <span><a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none;">Privacy Policy</a> · <a href="#"
-          style="color:rgba(255,255,255,0.5);text-decoration:none;">Terms of Use</a></span>
     </div>
   </footer>
 
   <!-- AOS deferred -->
   <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Disable hero video on mobile to save bandwidth
+    // -- 1. Disable hero video on mobile --
     (function () {
       if (window.innerWidth < 768) {
         var v = document.getElementById('hero-video');
-        if (v) { v.remove(); }
+        if (v) v.remove();
       }
     })();
 
-    // Init AOS after page load
+    // -- 2. Init AOS --
     window.addEventListener('load', function () {
       if (typeof AOS !== 'undefined') {
         AOS.init({ duration: 700, once: true, offset: 60 });
       }
     });
 
+    // -- 3. Mobile Drawer Sliding Logic --
     const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('nav-links');
-    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-    hamburger.addEventListener('keydown', e => { if (e.key === 'Enter') navLinks.classList.toggle('open'); });
+    const navDrawer = document.getElementById('nav-drawer');
+    const navBackdrop = document.getElementById('nav-backdrop');
+    const drawerClose = document.getElementById('drawer-close');
 
-    // Close mobile menu when a link is clicked
-    navLinks.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => navLinks.classList.remove('open'));
+    const drawerHasSubs = document.querySelectorAll('.drawer-has-sub');
+    const drawerBackBtns = document.querySelectorAll('.drawer-back-btn');
+    const paneMain = document.getElementById('pane-main');
+    const subPanes = document.querySelectorAll('.drawer-pane-sub');
+
+    function resetPanes() {
+      if (paneMain) paneMain.classList.remove('pane-hidden');
+      subPanes.forEach(pane => pane.classList.remove('active'));
+    }
+
+    function openDrawer() {
+      if (navDrawer) navDrawer.classList.add('is-open');
+      if (navBackdrop) navBackdrop.classList.add('visible');
+      if (hamburger) {
+        hamburger.classList.add('is-open');
+        hamburger.setAttribute('aria-expanded', 'true');
+      }
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      if (navDrawer) navDrawer.classList.remove('is-open');
+      if (navBackdrop) navBackdrop.classList.remove('visible');
+      if (hamburger) {
+        hamburger.classList.remove('is-open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+      document.body.style.overflow = '';
+      setTimeout(resetPanes, 350); // reset after slide down
+    }
+
+    if (hamburger) {
+      hamburger.addEventListener('click', () => {
+        if (!navDrawer) return;
+        navDrawer.classList.contains('is-open') ? closeDrawer() : openDrawer();
+      });
+      hamburger.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (navDrawer) navDrawer.classList.contains('is-open') ? closeDrawer() : openDrawer();
+        }
+      });
+    }
+
+    if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+    if (navBackdrop) navBackdrop.addEventListener('click', closeDrawer);
+
+    // Sliding behavior between panes
+    drawerHasSubs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        if (!targetId) return;
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) {
+          paneMain.classList.add('pane-hidden');
+          targetPane.classList.add('active');
+        }
+      });
     });
 
-    // Navbar shadow on scroll
+    drawerBackBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        if (targetId === 'pane-main') {
+          resetPanes();
+        }
+      });
+    });
+
+    // Close drawer when any actual navigational link is clicked
+    navDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+    // -- 4. Navbar shadow on scroll --
     const navbar = document.querySelector('.navbar');
     window.addEventListener('scroll', () => {
       navbar.style.boxShadow = window.scrollY > 10 ? '0 4px 24px rgba(0,0,0,0.1)' : 'none';
     }, { passive: true });
+
+    // -- 5. Roles scroll-snap dots (mobile) --
+    const rolesGrid = document.querySelector('.roles-grid');
+    const roleDots = document.querySelectorAll('#roles-dots span');
+    if (rolesGrid && roleDots.length) {
+      rolesGrid.addEventListener('scroll', () => {
+        const cardW = rolesGrid.querySelector('.role-card').offsetWidth + 16;
+        const idx = Math.round(rolesGrid.scrollLeft / cardW);
+        roleDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }, { passive: true });
+    }
+
+    // -- 6. Footer accordion (mobile) --
+    document.querySelectorAll('.footer-col-title[data-col]').forEach(title => {
+      title.addEventListener('click', () => {
+        const wrap = document.getElementById(title.getAttribute('data-col'));
+        const isOpen = wrap.classList.contains('open');
+        wrap.classList.toggle('open', !isOpen);
+        title.classList.toggle('expanded', !isOpen);
+      });
+    });
+
+    // Nested navigations in footer
+    document.querySelectorAll('.footer-sub-title').forEach(title => {
+      title.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const nestedId = title.getAttribute('data-nested');
+        const nested = document.getElementById(nestedId);
+        if (nested) {
+          const isOpen = nested.classList.contains('open');
+          nested.classList.toggle('open', !isOpen);
+          title.classList.toggle('expanded', !isOpen);
+        }
+      });
+    });
+
+    // -- Hero Canvas -- Construction Blueprint + AI Network --
+    (function () {
+      if (window.innerWidth < 768) return;
+
+      var canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+
+      var nodes = [];
+      var MAX_LINK = 160;
+
+      function sideX() {
+        return Math.random() < 0.5
+          ? Math.random() * canvas.width * 0.30
+          : canvas.width * 0.68 + Math.random() * canvas.width * 0.32;
+      }
+
+      function initNodes() {
+        nodes.length = 0;
+        var count = Math.round(canvas.width / 55);
+        for (var i = 0; i < count; i++) {
+          nodes.push({
+            x: sideX(),
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.28,
+            vy: (Math.random() - 0.5) * 0.28,
+            r: Math.random() * 2 + 3,
+            pulse: 0
+          });
+        }
+      }
+
+      function resize() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        initNodes();
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      setInterval(function () {
+        if (nodes.length) nodes[Math.floor(Math.random() * nodes.length)].pulse = 1;
+      }, 1400);
+
+      var particles = [];
+      setInterval(function () {
+        for (var tries = 0; tries < 20; tries++) {
+          var a = Math.floor(Math.random() * nodes.length);
+          var b = Math.floor(Math.random() * nodes.length);
+          if (a === b) continue;
+          var dx = nodes[a].x - nodes[b].x, dy = nodes[a].y - nodes[b].y;
+          if (Math.sqrt(dx * dx + dy * dy) < MAX_LINK) {
+            particles.push({ from: a, to: b, t: 0, speed: 0.008 + Math.random() * 0.006 });
+            break;
+          }
+        }
+        if (particles.length > 12) particles.splice(0, particles.length - 12);
+      }, 600);
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 1. Blueprint engineering grid
+        var G = 50;
+        ctx.save();
+        ctx.strokeStyle = 'rgba(80,140,220,0.07)';
+        ctx.lineWidth = 0.6;
+        for (var gx = 0; gx <= canvas.width; gx += G) {
+          ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, canvas.height); ctx.stroke();
+        }
+        for (var gy = 0; gy <= canvas.height; gy += G) {
+          ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvas.width, gy); ctx.stroke();
+        }
+        ctx.strokeStyle = 'rgba(80,140,220,0.14)';
+        ctx.lineWidth = 0.9;
+        for (var mx = 0; mx <= canvas.width; mx += G * 5) {
+          ctx.beginPath(); ctx.moveTo(mx, 0); ctx.lineTo(mx, canvas.height); ctx.stroke();
+        }
+        for (var my = 0; my <= canvas.height; my += G * 5) {
+          ctx.beginPath(); ctx.moveTo(0, my); ctx.lineTo(canvas.width, my); ctx.stroke();
+        }
+        ctx.restore();
+
+        // 2. Corner crosshair markers
+        var corners = [[24, 24], [canvas.width - 24, 24], [24, canvas.height - 24], [canvas.width - 24, canvas.height - 24]];
+        ctx.save();
+        ctx.strokeStyle = 'rgba(237,169,46,0.40)';
+        ctx.lineWidth = 1;
+        corners.forEach(function (c) {
+          var cx = c[0], cy = c[1], s = 14;
+          ctx.beginPath(); ctx.moveTo(cx - s, cy); ctx.lineTo(cx + s, cy); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(cx, cy - s); ctx.lineTo(cx, cy + s); ctx.stroke();
+          ctx.beginPath(); ctx.arc(cx, cy, 3.5, 0, Math.PI * 2); ctx.stroke();
+        });
+        ctx.restore();
+
+        // 3. AI network connection lines
+        ctx.save();
+        for (var i = 0; i < nodes.length; i++) {
+          for (var j = i + 1; j < nodes.length; j++) {
+            var dx2 = nodes[i].x - nodes[j].x, dy2 = nodes[i].y - nodes[j].y;
+            var dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+            if (dist < MAX_LINK) {
+              var strength = 1 - dist / MAX_LINK;
+              var pb = Math.max(nodes[i].pulse, nodes[j].pulse);
+              ctx.strokeStyle = 'rgba(237,169,46,' + (strength * (0.18 + pb * 0.45)) + ')';
+              ctx.lineWidth = 0.7 + pb * 0.8;
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+        ctx.restore();
+
+        // 4. Travelling glow particles
+        ctx.save();
+        for (var pi = particles.length - 1; pi >= 0; pi--) {
+          var pt = particles[pi];
+          pt.t += pt.speed;
+          if (pt.t > 1) { particles.splice(pi, 1); continue; }
+          var ni = nodes[pt.from], nj = nodes[pt.to];
+          if (!ni || !nj) continue;
+          var px2 = ni.x + (nj.x - ni.x) * pt.t;
+          var py2 = ni.y + (nj.y - ni.y) * pt.t;
+          var grd = ctx.createRadialGradient(px2, py2, 0, px2, py2, 8);
+          grd.addColorStop(0, 'rgba(237,169,46,0.65)');
+          grd.addColorStop(1, 'rgba(237,169,46,0)');
+          ctx.fillStyle = grd;
+          ctx.beginPath(); ctx.arc(px2, py2, 8, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = 'rgba(255,215,110,0.95)';
+          ctx.beginPath(); ctx.arc(px2, py2, 2, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.restore();
+
+        // 5. Network nodes €” small dots in side zones only
+        var lMax = canvas.width * 0.32, rMin = canvas.width * 0.68;
+        nodes.forEach(function (n) {
+          n.x += n.vx; n.y += n.vy;
+          if (n.y < n.r || n.y > canvas.height - n.r) n.vy *= -1;
+          if (n.x < n.r) { n.x = n.r; n.vx = Math.abs(n.vx); }
+          if (n.x > canvas.width - n.r) { n.x = canvas.width - n.r; n.vx = -Math.abs(n.vx); }
+          if (n.x > lMax && n.x < rMin) { n.vx *= -1; n.x = n.x < canvas.width * 0.5 ? lMax - 2 : rMin + 2; }
+          if (n.pulse > 0) n.pulse = Math.max(0, n.pulse - 0.015);
+
+          var p = n.pulse;
+          if (p > 0.05) {
+            var halo = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 6);
+            halo.addColorStop(0, 'rgba(237,169,46,' + (p * 0.35) + ')');
+            halo.addColorStop(1, 'rgba(237,169,46,0)');
+            ctx.fillStyle = halo;
+            ctx.beginPath(); ctx.arc(n.x, n.y, n.r * 6, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r + p * 2, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(237,169,46,' + (0.52 + p * 0.42) + ')';
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(255,215,110,' + (0.35 + p * 0.55) + ')';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+
+        requestAnimationFrame(draw);
+      }
+
+      requestAnimationFrame(draw);
+    })();
   </script>
 </body>
 

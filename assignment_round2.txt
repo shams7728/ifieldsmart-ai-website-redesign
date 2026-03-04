@@ -1,0 +1,31 @@
+Subject: Congratulations – Selected for Round 2 | Assignment Details
+Congratulations!
+You have successfully cleared the first round of the interview, and we are pleased to inform you that you have been shortlisted for the second round.
+Based on your first-round assignment, the second round will focus on customization and enhancements to the current design that you created.
+Round 2 – Design Customization Task
+Hero Section
+Add a custom construction AI–centric animation in the background of the hero section.
+The animation should align with the AI + construction theme and maintain a clean, professional look.
+
+Mobile Navigation Bar
+Modify the mobile navigation bar functionality.
+Create a custom mobile navbar design as referenced in the shared screenshot.
+Improve the overall mobile user experience.
+
+
+“Built Around Construction Roles — Not Generic Software” Section (Mobile)
+On mobile devices, apply a smooth scrolling effect to the following categories:
+Owners & Developers
+General Contractors
+Trade Contractors
+Architects & Designers
+
+Footer Section
+Redesign the entire footer section according to the shared screenshot.
+Ensure the structure, layout, and styling match the reference design.
+
+
+Timeline
+The deadline to complete this assignment is 2 days.Please ensure the task is submitted before the deadline.
+If you successfully clear this round, you will be shortlisted for the final round, which will be a face-to-face interview and the last stage of the selection process.
+We look forward to your updated submission.Best of luck!
