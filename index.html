@@ -7,10 +7,12 @@
   <title>iFieldSmart AI &mdash; Connected Construction Intelligence</title>
   <meta name="description"
     content="iFieldSmart AI connects construction data across every phase and for every stakeholder &mdash; powered by AI constructability, coordination, and reality intelligence." />
+  <meta name="theme-color" content="#0f1a2e" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
   <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <link rel="dns-prefetch" href="https://images.unsplash.com" />
   <!-- Google Fonts: non-render-blocking -->
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
@@ -33,7 +35,7 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
   </noscript>
   <!-- Preload hero LCP image -->
-  <link rel="preload" as="image"
+  <link rel="preload" as="image" fetchpriority="high"
     href="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=75" />
   <style>
     *,
@@ -1549,6 +1551,48 @@
         align-items: stretch;
       }
     }
+
+    /* ============================================================
+       MOBILE PAGESPEED OPTIMIZATIONS
+       ============================================================ */
+    @media (max-width: 767px) {
+
+      /* 1. Hide canvas – no continuous rAF loop on mobile */
+      .hero-canvas {
+        display: none !important;
+      }
+
+      /* 2. Disable scanner repaint animation */
+      .hero-scanner {
+        animation: none !important;
+        opacity: 0 !important;
+      }
+
+      /* 3. Remove GPU-expensive backdrop-filter from sticky nav */
+      .navbar {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+
+      /* 4. Zero-out AOS transition delays so no animation jank */
+      [data-aos] {
+        transition-duration: 1ms !important;
+        transition-delay: 0ms !important;
+      }
+    }
+
+    /* 5. content-visibility: auto – skip render for off-screen sections */
+    .sub-hero,
+    .roles,
+    .phases,
+    .data-core,
+    .capabilities,
+    .why-section,
+    .cta-section,
+    .footer {
+      content-visibility: auto;
+      contain-intrinsic-size: 0 600px;
+    }
   </style>
 </head>
 
@@ -1746,8 +1790,11 @@
         </div>
         <div class="role-card" data-aos="fade-up" data-aos-delay="250">
           <img class="role-card-img"
-            src="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=800&q=80"
-            alt="Architects and Designers" loading="lazy" />
+            src="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=600&q=75" srcset="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=400&q=70 400w,
+                    https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=600&q=75 600w,
+                    https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=800&q=80 800w"
+            sizes="(max-width: 768px) 100vw, 50vw" alt="Architects and Designers" loading="lazy" width="600"
+            height="320" />
           <div class="role-card-overlay"></div>
           <div class="role-card-body">
             <h3>Architects &amp; Designers</h3>
@@ -2176,7 +2223,9 @@
     });
 
     // -- Hero Canvas -- Construction Blueprint + AI Network --
+    // Skip canvas entirely on mobile to avoid continuous rAF CPU drain
     (function () {
+      if (window.innerWidth < 768) return;
       var canvas = document.getElementById('hero-canvas');
       if (!canvas) return;
       var ctx = canvas.getContext('2d');
